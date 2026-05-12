@@ -8045,6 +8045,9 @@ do
     end)()
 end
 
+-- Expose Menu globally so scripts can access Menu.Library etc.
+_G.Menu = Menu
+
 -- Localisation 2
 local Library = Menu.Library
 local Flags = Menu.Flags
