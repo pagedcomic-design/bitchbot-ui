@@ -8045,8 +8045,6 @@ do
     end)()
 end
 
--- Return Menu so callers can access Menu.Library etc.
-return Menu
 
 -- Localisation 2
 local Library = Menu.Library
