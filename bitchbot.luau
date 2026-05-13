@@ -2067,7 +2067,7 @@ do
 
                             Window["Tabs Holder"] = TabSpace
                         else
-                            local SectionsHolder = Menu.Draw("Frame", { Parent = Background, Position = NewUDim2(0, 2, 0, 2), Size = NewUDim2(1, -4, 1, -6), BackgroundTransparency = 1 })
+                            local SectionsHolder = Menu.Draw("ScrollingFrame", { Parent = Background, Position = NewUDim2(0, 2, 0, 2), Size = NewUDim2(1, -4, 1, -6), BackgroundTransparency = 1, ScrollingEnabled = true, ScrollBarThickness = 3, ClipsDescendants = true, ScrollBarImageColor3 = NewRGB(80, 100, 220) })
 
                             local Left = Menu.Draw("Frame", { Parent = SectionsHolder, Position = EmptyUDim2, Size = NewUDim2(0.5, -2, 1, 0), BackgroundTransparency = 1, BorderSizePixel = 0 })
 
@@ -2075,11 +2075,11 @@ do
 
                             local Fill = Menu.Draw("Frame", { Parent = SectionsHolder, Position = EmptyUDim2, Size = NewUDim2(1, 0, 1, 0), BackgroundTransparency = 1, BorderSizePixel = 0 })
 
-                            Menu.Draw("UIListLayout", { Parent = Left, Padding = NewUDim(0, 4), FillDirection = "Vertical", HorizontalAlignment = "Left", VerticalAlignment = "Top" })
+                            Menu.Draw("UIListLayout", { Parent = Left, Padding = NewUDim(0, 1), FillDirection = "Vertical", HorizontalAlignment = "Left", VerticalAlignment = "Top" })
 
-                            Menu.Draw("UIListLayout", { Parent = Right, Padding = NewUDim(0, 4), FillDirection = "Vertical", HorizontalAlignment = "Left", VerticalAlignment = "Top" })
+                            Menu.Draw("UIListLayout", { Parent = Right, Padding = NewUDim(0, 1), FillDirection = "Vertical", HorizontalAlignment = "Left", VerticalAlignment = "Top" })
 
-                            Menu.Draw("UIListLayout", { Parent = Fill, Padding = NewUDim(0, 4), FillDirection = "Vertical", HorizontalAlignment = "Left", VerticalAlignment = "Top" })
+                            Menu.Draw("UIListLayout", { Parent = Fill, Padding = NewUDim(0, 1), FillDirection = "Vertical", HorizontalAlignment = "Left", VerticalAlignment = "Top" })
 
                             Window["Sections Holder"] = SectionsHolder
 
@@ -2602,7 +2602,7 @@ do
 
                         local Label = Menu.Draw("TextLabel", { Parent = Outline, AnchorPoint = NewVector2(0.5, 0), Position = NewUDim2(0.5, 0, 0, 8), Text = Name, BackgroundTransparency = 1, BorderSizePixel = 0, TextColor3 = Theme["Text Color"].B })
 
-                        local SectionsHolder = Menu.Draw("Frame", { Parent = Self.Background, Position = NewUDim2(0, 3, 0, 4), Size = NewUDim2(1, -6, 1, -8), BackgroundTransparency = 1, Visible = false })
+                        local SectionsHolder = Menu.Draw("ScrollingFrame", { Parent = Self.Background, Position = NewUDim2(0, 3, 0, 4), Size = NewUDim2(1, -6, 1, -8), BackgroundTransparency = 1, Visible = false, ScrollingEnabled = true, ScrollBarThickness = 3, ClipsDescendants = true, ScrollBarImageColor3 = NewRGB(80, 100, 220) })
 
                         local Left = Menu.Draw("Frame", { Parent = SectionsHolder, Position = EmptyUDim2, Size = NewUDim2(0.5, -2, 1, 0), BackgroundTransparency = 1, BorderSizePixel = 0 })
 
@@ -2610,11 +2610,11 @@ do
 
                         local Fill = Menu.Draw("Frame", { Parent = SectionsHolder, Position = EmptyUDim2, Size = NewUDim2(1, 0, 1, 0), BackgroundTransparency = 1, BorderSizePixel = 0 })
 
-                        Menu.Draw("UIListLayout", { Parent = Left, Padding = NewUDim(0, 4), FillDirection = "Vertical", HorizontalAlignment = "Left", VerticalAlignment = "Top" })
+                        Menu.Draw("UIListLayout", { Parent = Left, Padding = NewUDim(0, 1), FillDirection = "Vertical", HorizontalAlignment = "Left", VerticalAlignment = "Top" })
 
-                        Menu.Draw("UIListLayout", { Parent = Right, Padding = NewUDim(0, 4), FillDirection = "Vertical", HorizontalAlignment = "Left", VerticalAlignment = "Top" })
+                        Menu.Draw("UIListLayout", { Parent = Right, Padding = NewUDim(0, 1), FillDirection = "Vertical", HorizontalAlignment = "Left", VerticalAlignment = "Top" })
 
-                        Menu.Draw("UIListLayout", { Parent = Fill, Padding = NewUDim(0, 4), FillDirection = "Vertical", HorizontalAlignment = "Left", VerticalAlignment = "Top" })
+                        Menu.Draw("UIListLayout", { Parent = Fill, Padding = NewUDim(0, 1), FillDirection = "Vertical", HorizontalAlignment = "Left", VerticalAlignment = "Top" })
 
                         -- Colors
                         do
