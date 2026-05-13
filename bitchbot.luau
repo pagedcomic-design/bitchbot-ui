@@ -1764,7 +1764,7 @@ do
 
                         local Holder = Menu.Draw("Frame", { Parent = Outline, BackgroundColor3 = Theme.Outline, BorderSizePixel = 0, Size = NewUDim2(1, 0, 0, 4), Position = NewUDim2(0, 0, 1, -4) })
 
-                        local Background = Menu.Draw("Frame", { Parent = Outline, BackgroundTransparency = 1, BorderSizePixel = 0, Size = NewUDim2(1, 0, 1, -6), Position = EmptyUDim2 })
+                        local Background = Menu.Draw("Frame", { Parent = Outline, BackgroundTransparency = 1, BorderSizePixel = 0, Size = NewUDim2(1, -130, 1, -6), Position = EmptyUDim2 })
 
                         local TextHolder = Menu.Draw("Frame", { Parent = Background, BackgroundTransparency = 1, BorderSizePixel = 0 })
 
@@ -1951,6 +1951,27 @@ do
                         end)
                     end
 
+
+                    -- Dock toggle buttons (right side)
+                    do
+                        local RightSide = Menu.Draw("Frame", { Parent = Outline, BackgroundTransparency = 1, BorderSizePixel = 0, Size = NewUDim2(0, 120, 1, 0), Position = NewUDim2(1, -120, 0, 0) })
+                        Menu.Draw("UIListLayout", { Parent = RightSide, Padding = EmptyUDim, FillDirection = "Horizontal", HorizontalAlignment = "Right", VerticalAlignment = "Center" })
+
+                        local function addDockBtn(txt, tooltip, cb)
+                            local b = Menu.Draw("TextButton", { Parent = RightSide, Text = txt, TextSize = 11, TextColor3 = Theme["Text Color"].A, BackgroundColor3 = Theme.Contrast.B, BorderSizePixel = 0, Size = NewUDim2(0, 32, 0, 18) })
+                            b.MouseButton1Click:Connect(cb)
+                            Library.Colors[b] = { { "TextColor3", "Text Color", "A" }, { "BackgroundColor3", "Contrast", "B" } }
+                        end
+
+                        addDockBtn("W", "Watermark", function()
+                            local wm = Window and Window["_WatermarkRef"]
+                            if wm then wm.Visible = not wm.Visible end
+                        end)
+                        addDockBtn("K", "Keybinds", function()
+                            local kb = Window and Window["_KeybindsRef"]
+                            if kb then kb.Visible = not kb.Visible end
+                        end)
+                    end
 
                     return Dock
                 end
