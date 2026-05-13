@@ -1964,14 +1964,18 @@ do
                         end
 
                         addDockBtn("W", "Watermark", function()
-                            local target = Dock.Windows[1]
-                            local wm = target and target["_WatermarkRef"]
-                            if wm then wm.Visible = not wm.Visible end
+                            local target = Dock.Windows and Dock.Windows[1]
+                            if target then
+                                local wm = target["_WatermarkRef"]
+                                if wm then wm.Visible = not wm.Visible end
+                            end
                         end)
                         addDockBtn("K", "Keybinds", function()
-                            local target = Dock.Windows[1]
-                            local kb = target and target["_KeybindsRef"]
-                            if kb then kb.Visible = not kb.Visible end
+                            local target = Dock.Windows and Dock.Windows[1]
+                            if target then
+                                local kb = target["_KeybindsRef"]
+                                if kb then kb.Visible = not kb.Visible end
+                            end
                         end)
                     end
 
