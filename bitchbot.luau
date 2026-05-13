@@ -2115,6 +2115,34 @@ do
 
                         Window["Outline"] = Outline
                         Window["Overlay"] = Overlay
+
+                        -- Resize handle
+                        do
+                            local ResizeHandle = Menu.Draw("TextButton", { Parent = Outline, AnchorPoint = NewVector2(1, 1), Position = NewUDim2(1, 0, 1, 0), Size = NewUDim2(0, 14, 0, 14), BackgroundColor3 = Theme.Accent.B, BorderSizePixel = 0, Text = "", ZIndex = 9999 })
+                            Library.Colors[ResizeHandle] = { { "BackgroundColor3", "Accent", "B" } }
+                            local resizing = false
+                            local resizeStart = nil
+                            local resizeSize = nil
+                            local UIS = game:GetService("UserInputService")
+                            ResizeHandle.MouseButton1Down:Connect(function()
+                                resizing = true
+                                resizeStart = Vector2.new(UIS:GetMouseLocation().X, UIS:GetMouseLocation().Y)
+                                resizeSize = Outline.AbsoluteSize
+                            end)
+                            UIS.InputChanged:Connect(function(input)
+                                if resizing and input.UserInputType == Enum.UserInputType.MouseMovement then
+                                    local delta = Vector2.new(input.Position.X, input.Position.Y) - resizeStart
+                                    local newSize = resizeSize + delta
+                                    newSize = Vector2.new(math.max(380, newSize.X), math.max(300, newSize.Y))
+                                    Outline.Size = NewUDim2(0, newSize.X, 0, newSize.Y)
+                                end
+                            end)
+                            UIS.InputEnded:Connect(function(input)
+                                if resizing and input.UserInputType == Enum.UserInputType.MouseButton1 then
+                                    resizing = false
+                                end
+                            end)
+                        end
                     end
 
 
