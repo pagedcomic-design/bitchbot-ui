@@ -3452,6 +3452,26 @@ do
 
                     Self.Sections[#Self.Sections + 1] = Section
 
+                    -- Update canvas size for scrolling
+                    local sh = Self["Sections Holder"]
+                    if sh then
+                        local maxH = 0
+                        for _, side in ipairs({Self["Left"], Self["Right"], Self["Fill"]}) do
+                            if side then
+                                local total = 0
+                                for _, child in ipairs(side:GetChildren()) do
+                                    if child:IsA("Frame") then
+                                        total = total + child.AbsoluteSize.Y
+                                    end
+                                end
+                                if total > maxH then maxH = total end
+                            end
+                        end
+                        if maxH > 0 then
+                            sh.CanvasSize = NewUDim2(0, 0, 0, maxH + 10)
+                        end
+                    end
+
                     return Section
                 end
 
@@ -3740,6 +3760,25 @@ do
 
                     Self["Sections Holder"].Visible = true
                     Self.IsVisible = true
+
+                    -- Calculate canvas size for scrolling
+                    local sh = Self["Sections Holder"]
+                    local maxH = 0
+                    local sides = {Self["Left"], Self["Right"], Self["Fill"]}
+                    for _, side in ipairs(sides) do
+                        if side then
+                            local total = 0
+                            for _, child in ipairs(side:GetChildren()) do
+                                if child:IsA("Frame") then
+                                    total = total + child.AbsoluteSize.Y
+                                end
+                            end
+                            if total > maxH then maxH = total end
+                        end
+                    end
+                    if maxH > 0 then
+                        sh.CanvasSize = NewUDim2(0, 0, 0, maxH + 10)
+                    end
 
                     Window.CurrentTab = Self
                 end
