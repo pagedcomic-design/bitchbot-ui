@@ -3321,7 +3321,7 @@ do
 
                     -- Renders
                     do
-                        local Frame = Menu.Draw("Frame", { Parent = Self[Side], Size = NewUDim2(1, 0, Fill and 1 or 0, Fill and 0 or Size), BackgroundTransparency = 1, BorderSizePixel = 0 })
+                        local Frame = Menu.Draw("Frame", { Parent = Self[Side], Size = NewUDim2(1, 0, 0, 0), BackgroundTransparency = 1, BorderSizePixel = 0, AutomaticSize = Enum.AutomaticSize.Y })
 
                         local Outline = Menu.Draw("Frame", { Parent = Frame, Position = NewUDim2(0, 0, 0, Offset), Size = NewUDim2(1, 0, 1, 0), BackgroundColor3 = Theme.Contrast.A, BorderColor3 = Theme.Outline, BorderMode = "Inset" })
 
@@ -3406,7 +3406,7 @@ do
 
                     -- Renders
                     do
-                        local Frame = Menu.Draw("Frame", { Parent = Self[Side], Size = NewUDim2(1, 0, Fill and 1 or 0, Fill and 0 or Size), BackgroundTransparency = 1, BorderSizePixel = 0 })
+                        local Frame = Menu.Draw("Frame", { Parent = Self[Side], Size = NewUDim2(1, 0, 0, 0), BackgroundTransparency = 1, BorderSizePixel = 0, AutomaticSize = Enum.AutomaticSize.Y })
 
                         local Outline = Menu.Draw("Frame", { Parent = Frame, Position = NewUDim2(0, 0, 0, Offset), Size = NewUDim2(1, 0, 1, 0), BackgroundColor3 = Theme.Contrast.A, BorderColor3 = Theme.Outline, BorderMode = "Inset" })
 
@@ -3480,7 +3480,7 @@ do
 
                     -- Renders
                     do
-                        local Frame = Menu.Draw("Frame", { Parent = Self[Side], Size = NewUDim2(1, 0, Fill and 1 or 0, Fill and 0 or Size), BackgroundTransparency = 1, BorderSizePixel = 0 })
+                        local Frame = Menu.Draw("Frame", { Parent = Self[Side], Size = NewUDim2(1, 0, 0, 0), BackgroundTransparency = 1, BorderSizePixel = 0, AutomaticSize = Enum.AutomaticSize.Y })
 
                         local Outline = Menu.Draw("Frame", { Parent = Frame, Position = NewUDim2(0, 0, 0, Offset), Size = NewUDim2(1, 0, 1, 0), BackgroundColor3 = Theme.Contrast.A, BorderColor3 = Theme.Outline, BorderMode = "Inset" })
 
