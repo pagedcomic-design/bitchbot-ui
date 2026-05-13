@@ -3321,7 +3321,7 @@ do
 
                     -- Renders
                     do
-                        local Frame = Menu.Draw("Frame", { Parent = Self[Side], Size = NewUDim2(1, 0, 0, 0), BackgroundTransparency = 1, BorderSizePixel = 0, AutomaticSize = Enum.AutomaticSize.Y })
+                        local Frame = Menu.Draw("Frame", { Parent = Self[Side], Size = NewUDim2(1, 0, Fill and 1 or 0, Fill and 0 or Size), BackgroundTransparency = 1, BorderSizePixel = 0 })
 
                         local Outline = Menu.Draw("Frame", { Parent = Frame, Position = NewUDim2(0, 0, 0, Offset), Size = NewUDim2(1, 0, 1, 0), BackgroundColor3 = Theme.Contrast.A, BorderColor3 = Theme.Outline, BorderMode = "Inset" })
 
@@ -3406,7 +3406,7 @@ do
 
                     -- Renders
                     do
-                        local Frame = Menu.Draw("Frame", { Parent = Self[Side], Size = NewUDim2(1, 0, 0, 0), BackgroundTransparency = 1, BorderSizePixel = 0, AutomaticSize = Enum.AutomaticSize.Y })
+                        local Frame = Menu.Draw("Frame", { Parent = Self[Side], Size = NewUDim2(1, 0, Fill and 1 or 0, Fill and 0 or Size), BackgroundTransparency = 1, BorderSizePixel = 0 })
 
                         local Outline = Menu.Draw("Frame", { Parent = Frame, Position = NewUDim2(0, 0, 0, Offset), Size = NewUDim2(1, 0, 1, 0), BackgroundColor3 = Theme.Contrast.A, BorderColor3 = Theme.Outline, BorderMode = "Inset" })
 
@@ -3452,24 +3452,13 @@ do
 
                     Self.Sections[#Self.Sections + 1] = Section
 
-                    -- Update canvas size for scrolling
+                    -- Accumulate column height for canvas sizing
+                    if not Self._colHeight then Self._colHeight = {Left = 0, Right = 0, Fill = 0} end
+                    Self._colHeight[Side] = Self._colHeight[Side] + Size + 1
                     local sh = Self["Sections Holder"]
                     if sh then
-                        local maxH = 0
-                        for _, side in ipairs({Self["Left"], Self["Right"], Self["Fill"]}) do
-                            if side then
-                                local total = 0
-                                for _, child in ipairs(side:GetChildren()) do
-                                    if child:IsA("Frame") then
-                                        total = total + child.AbsoluteSize.Y
-                                    end
-                                end
-                                if total > maxH then maxH = total end
-                            end
-                        end
-                        if maxH > 0 then
-                            sh.CanvasSize = NewUDim2(0, 0, 0, maxH + 10)
-                        end
+                        local maxH = math.max(Self._colHeight.Left, Self._colHeight.Right, Self._colHeight.Fill)
+                        sh.CanvasSize = NewUDim2(0, 0, 0, maxH + 20)
                     end
 
                     return Section
@@ -3500,7 +3489,7 @@ do
 
                     -- Renders
                     do
-                        local Frame = Menu.Draw("Frame", { Parent = Self[Side], Size = NewUDim2(1, 0, 0, 0), BackgroundTransparency = 1, BorderSizePixel = 0, AutomaticSize = Enum.AutomaticSize.Y })
+                        local Frame = Menu.Draw("Frame", { Parent = Self[Side], Size = NewUDim2(1, 0, Fill and 1 or 0, Fill and 0 or Size), BackgroundTransparency = 1, BorderSizePixel = 0 })
 
                         local Outline = Menu.Draw("Frame", { Parent = Frame, Position = NewUDim2(0, 0, 0, Offset), Size = NewUDim2(1, 0, 1, 0), BackgroundColor3 = Theme.Contrast.A, BorderColor3 = Theme.Outline, BorderMode = "Inset" })
 
@@ -3761,23 +3750,11 @@ do
                     Self["Sections Holder"].Visible = true
                     Self.IsVisible = true
 
-                    -- Calculate canvas size for scrolling
-                    local sh = Self["Sections Holder"]
-                    local maxH = 0
-                    local sides = {Self["Left"], Self["Right"], Self["Fill"]}
-                    for _, side in ipairs(sides) do
-                        if side then
-                            local total = 0
-                            for _, child in ipairs(side:GetChildren()) do
-                                if child:IsA("Frame") then
-                                    total = total + child.AbsoluteSize.Y
-                                end
-                            end
-                            if total > maxH then maxH = total end
-                        end
-                    end
-                    if maxH > 0 then
-                        sh.CanvasSize = NewUDim2(0, 0, 0, maxH + 10)
+                    -- Restore canvas size from stored column heights
+                    if Self._colHeight then
+                        local sh = Self["Sections Holder"]
+                        local maxH = math.max(Self._colHeight.Left, Self._colHeight.Right, Self._colHeight.Fill)
+                        sh.CanvasSize = NewUDim2(0, 0, 0, maxH + 20)
                     end
 
                     Window.CurrentTab = Self
