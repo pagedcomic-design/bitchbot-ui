@@ -1787,6 +1787,7 @@ do
 
                         Dock["Outline"] = Outline
                         Dock["Inline"] = Inline
+                        _G["__Dock_Ref"] = Outline
 
                         Dock["Holder"] = Background
                         Dock["Label"] = Label
@@ -2486,6 +2487,7 @@ local Gradient = Menu.Draw("UIGradient", { Parent = Header, Color = NewColorSequ
 
                         KeybindsList["Outline"] = Outline
                         KeybindsList["Background"] = Background
+                        Window["_KeybindsRef"] = Outline
                     end
 
 
