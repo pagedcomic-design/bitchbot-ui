@@ -2094,6 +2094,25 @@ do
 
                         local Title = Menu.Draw("TextLabel", { Parent = Inline, Position = NewUDim2(0, 2, 0, 7), Text = Name, TextColor3 = Theme["Text Color"].A, TextXAlignment = "Left", BackgroundTransparency = 1, BorderSizePixel = 0 })
 
+                        -- Header buttons
+                        local function makeHeadBtn(txt, posX, cb)
+                            local btn = Menu.Draw("TextButton", { Parent = Inline, Position = NewUDim2(0, posX, 0, 6), Size = NewUDim2(0, 22, 0, 20), Text = txt, TextSize = 11, TextColor3 = Theme["Text Color"].A, BackgroundColor3 = Theme.Contrast.B, BorderSizePixel = 0, ZIndex = 100 })
+                            btn.MouseButton1Click:Connect(cb)
+                            Library.Colors[btn] = { { "TextColor3", "Text Color", "A" }, { "BackgroundColor3", "Contrast", "B" } }
+                            return btn
+                        end
+                        Window["_HeaderBtns"] = {}
+                        Window["_HeaderBtns"][1] = makeHeadBtn("N", 66, function()
+                            _G.crash_NotifyEnabled = not _G.crash_NotifyEnabled
+                        end)
+                        Window["_HeaderBtns"][2] = makeHeadBtn("W", 90, function()
+                            local wm = Window["_WatermarkRef"]
+                            if wm then wm.Visible = not wm.Visible end
+                        end)
+                        Window["_HeaderBtns"][3] = makeHeadBtn("M", 114, function()
+                            Window.IsVisible = not Window.IsVisible
+                        end)
+
                         local Gradient = Menu.Draw("UIGradient", { Parent = Header, Color = NewColorSequence(Theme.Contrast.A, Theme.Contrast.B), Rotation = 90 })
 
                         local Stroke = Menu.Draw("UIStroke", { Parent = Background, Color = Theme.Outline })
@@ -2363,6 +2382,7 @@ do
 
                         Watermark["Outline"] = Outline
                         Watermark["Label"] = Label
+                        Self["_WatermarkRef"] = Outline
 
                         Watermark["Position"] = Outline.Position
                     end
