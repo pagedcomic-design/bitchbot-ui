@@ -3333,7 +3333,13 @@ do
 
                         Menu.Draw("Frame", { Parent = Background, Size = NewUDim2(1, 0, 0, -3), BackgroundTransparency = 1, BorderSizePixel = 0 })
 
-                        Menu.Draw("UIListLayout", { Parent = Background, Padding = NewUDim(0, 4) })
+                        local SectionLayout = Menu.Draw("UIListLayout", { Parent = Background, Padding = NewUDim(0, 4) })
+                        SectionLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+                            local contentH = SectionLayout.AbsoluteContentSize.Y
+                            if contentH > 0 then
+                                Frame.Size = NewUDim2(1, 0, 0, contentH + 48)
+                            end
+                        end)
 
                         -- Colors
                         do
