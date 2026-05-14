@@ -2385,7 +2385,7 @@ local Gradient = Menu.Draw("UIGradient", { Parent = Header, Color = NewColorSequ
 
                         Watermark["Outline"] = Outline
                         Watermark["Label"] = Label
-                        Self["_WatermarkRef"] = Outline
+                        _G["__crash_WatermarkRef"] = Outline
 
                         Watermark["Position"] = Outline.Position
                     end
@@ -2508,7 +2508,7 @@ local Gradient = Menu.Draw("UIGradient", { Parent = Header, Color = NewColorSequ
 
                         KeybindsList["Outline"] = Outline
                         KeybindsList["Background"] = Background
-                        Self["_KeybindsRef"] = Outline
+                        _G["__crash_KeybindsRef"] = Outline
                     end
 
 
