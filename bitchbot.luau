@@ -1764,7 +1764,7 @@ do
 
                         local Holder = Menu.Draw("Frame", { Parent = Outline, BackgroundColor3 = Theme.Outline, BorderSizePixel = 0, Size = NewUDim2(1, 0, 0, 4), Position = NewUDim2(0, 0, 1, -4) })
 
-                        local Background = Menu.Draw("Frame", { Parent = Outline, BackgroundTransparency = 1, BorderSizePixel = 0, Size = NewUDim2(1, -130, 1, -6), Position = EmptyUDim2 })
+                        local Background = Menu.Draw("Frame", { Parent = Outline, BackgroundTransparency = 1, BorderSizePixel = 0, Size = NewUDim2(1, 0, 1, -6), Position = EmptyUDim2 })
 
                         local TextHolder = Menu.Draw("Frame", { Parent = Background, BackgroundTransparency = 1, BorderSizePixel = 0 })
 
@@ -1952,14 +1952,11 @@ do
                     end
 
 
-                    -- Dock toggle buttons (right side)
+                    -- Dock toggle buttons (left side, after window buttons)
                     do
-                        local RightSide = Menu.Draw("Frame", { Parent = Outline, BackgroundTransparency = 1, BorderSizePixel = 0, Size = NewUDim2(0, 160, 1, 0), Position = NewUDim2(1, -160, 0, 0) })
-                        Menu.Draw("UIListLayout", { Parent = RightSide, Padding = EmptyUDim, FillDirection = "Horizontal", HorizontalAlignment = "Right", VerticalAlignment = "Center" })
-
-                        local function addDockBtn(name, cb)
+                        local function addDockBtn2(name, cb)
                             local Color = "B"
-                            local Outline2 = Menu.Draw("Frame", { Parent = RightSide, BackgroundColor3 = Theme.Outline, BorderSizePixel = 0, Size = NewUDim2(0, Menu.GetTextBounds(name, Fonts["Tahoma"]).X + 8, 1, 1) })
+                            local Outline2 = Menu.Draw("Frame", { Parent = Background, BackgroundColor3 = Theme.Outline, BorderSizePixel = 0, Size = NewUDim2(0, Menu.GetTextBounds(name, Fonts["Tahoma"]).X + 8, 1, 0) })
                             local Inline2 = Menu.Draw("Frame", { Parent = Outline2, BackgroundColor3 = Theme.Contrast[Color], BorderSizePixel = 0, Size = NewUDim2(1, -2, 1, -1), Position = NewUDim2(0, 1, 0, 0) })
                             local Btn = Menu.Draw("TextButton", { Parent = Outline2, Text = name, Size = NewUDim2(1, 0, 1, -2), Position = EmptyUDim2, BackgroundTransparency = 1, BorderSizePixel = 0, TextColor3 = Theme["Text Color"][Color] })
                             Btn.MouseButton1Click:Connect(cb)
@@ -1968,11 +1965,11 @@ do
                             Library.Colors[Btn] = { { "TextColor3", "Text Color", Color } }
                         end
 
-                        addDockBtn("Watermark", function()
+                        addDockBtn2("Watermark", function()
                             local wm = _G.__crash_WatermarkRef
                             if wm then wm.Visible = not wm.Visible end
                         end)
-                        addDockBtn("Keybinds", function()
+                        addDockBtn2("Keybinds", function()
                             local kb = _G.__crash_KeybindsRef
                             if kb then kb.Visible = not kb.Visible end
                         end)
