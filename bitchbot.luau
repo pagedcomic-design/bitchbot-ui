@@ -1954,20 +1954,25 @@ do
 
                     -- Dock toggle buttons (right side)
                     do
-                        local RightSide = Menu.Draw("Frame", { Parent = Outline, BackgroundTransparency = 1, BorderSizePixel = 0, Size = NewUDim2(0, 120, 1, 0), Position = NewUDim2(1, -120, 0, 0) })
+                        local RightSide = Menu.Draw("Frame", { Parent = Outline, BackgroundTransparency = 1, BorderSizePixel = 0, Size = NewUDim2(0, 160, 1, 0), Position = NewUDim2(1, -160, 0, 0) })
                         Menu.Draw("UIListLayout", { Parent = RightSide, Padding = EmptyUDim, FillDirection = "Horizontal", HorizontalAlignment = "Right", VerticalAlignment = "Center" })
 
-                        local function addDockBtn(txt, tooltip, cb)
-                            local b = Menu.Draw("TextButton", { Parent = RightSide, Text = txt, TextSize = 11, TextColor3 = Theme["Text Color"].A, BackgroundColor3 = Theme.Contrast.B, BorderSizePixel = 0, Size = NewUDim2(0, 32, 0, 18) })
-                            b.MouseButton1Click:Connect(cb)
-                            Library.Colors[b] = { { "TextColor3", "Text Color", "A" }, { "BackgroundColor3", "Contrast", "B" } }
+                        local function addDockBtn(name, cb)
+                            local Color = "B"
+                            local Outline2 = Menu.Draw("Frame", { Parent = RightSide, BackgroundColor3 = Theme.Outline, BorderSizePixel = 0, Size = NewUDim2(0, Menu.GetTextBounds(name, Fonts["Tahoma"]).X + 8, 1, 1) })
+                            local Inline2 = Menu.Draw("Frame", { Parent = Outline2, BackgroundColor3 = Theme.Contrast[Color], BorderSizePixel = 0, Size = NewUDim2(1, -2, 1, -1), Position = NewUDim2(0, 1, 0, 0) })
+                            local Btn = Menu.Draw("TextButton", { Parent = Outline2, Text = name, Size = NewUDim2(1, 0, 1, -2), Position = EmptyUDim2, BackgroundTransparency = 1, BorderSizePixel = 0, TextColor3 = Theme["Text Color"][Color] })
+                            Btn.MouseButton1Click:Connect(cb)
+                            Library.Colors[Outline2] = { { "BackgroundColor3", "Outline" } }
+                            Library.Colors[Inline2] = { { "BackgroundColor3", "Contrast", Color } }
+                            Library.Colors[Btn] = { { "TextColor3", "Text Color", Color } }
                         end
 
-                        addDockBtn("W", "Watermark", function()
+                        addDockBtn("Watermark", function()
                             local wm = _G.__crash_WatermarkRef
                             if wm then wm.Visible = not wm.Visible end
                         end)
-                        addDockBtn("K", "Keybinds", function()
+                        addDockBtn("Keybinds", function()
                             local kb = _G.__crash_KeybindsRef
                             if kb then kb.Visible = not kb.Visible end
                         end)
