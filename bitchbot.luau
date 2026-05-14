@@ -1964,18 +1964,12 @@ do
                         end
 
                         addDockBtn("W", "Watermark", function()
-                            local target = Dock._winRef
-                            if target then
-                                local wm = target["_WatermarkRef"]
-                                if wm then wm.Visible = not wm.Visible end
-                            end
+                            local wm = _G.__crash_WatermarkRef
+                            if wm then wm.Visible = not wm.Visible end
                         end)
                         addDockBtn("K", "Keybinds", function()
-                            local target = Dock._winRef
-                            if target then
-                                local kb = target["_KeybindsRef"]
-                                if kb then kb.Visible = not kb.Visible end
-                            end
+                            local kb = _G.__crash_KeybindsRef
+                            if kb then kb.Visible = not kb.Visible end
                         end)
                     end
 
