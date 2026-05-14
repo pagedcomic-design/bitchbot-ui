@@ -4129,6 +4129,7 @@ local Gradient = Menu.Draw("UIGradient", { Parent = Header, Color = NewColorSequ
                     local Callback = Parameters.Callback or EmptyFunction
                     local Flag = Parameters.Flag
                     local Category = Parameters.Category
+                    local NoCheckbox = Parameters.NoCheckbox or false
 
                     local IsSection = Self.IsSection
                     local MainFrame = Self.Frame
@@ -4190,6 +4191,14 @@ local Gradient = Menu.Draw("UIGradient", { Parent = Header, Color = NewColorSequ
 
                         Toggle["Button"] = Button
                         Toggle["TextLabel"] = Label
+
+                        if NoCheckbox then
+                            Outline.Visible = false
+                            Inline.Visible = false
+                            Button.Visible = false
+                            Label.Visible = false
+                            Toggle.Value = true
+                        end
                     end
 
 
