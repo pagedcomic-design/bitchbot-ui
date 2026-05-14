@@ -1953,6 +1953,28 @@ do
                     end
 
 
+                    -- Dock extras (same pattern as Dock.Add — parented to Holder)
+                    do
+                        local function dockExtra(name, cb)
+                            local w = Menu.GetTextBounds(name, Fonts["Tahoma"]).X + 10
+                            local O = Menu.Draw("Frame", { Parent = Holder, BackgroundColor3 = Theme.Outline, BorderSizePixel = 0, Size = NewUDim2(0, w, 1, 1) })
+                            local I = Menu.Draw("Frame", { Parent = O, BackgroundColor3 = Theme.Contrast.B, BorderSizePixel = 0, Size = NewUDim2(1, -2, 1, -1), Position = NewUDim2(0, 1, 0, 0) })
+                            local B = Menu.Draw("TextButton", { Parent = O, Text = name, Size = NewUDim2(1, 0, 1, -2), Position = EmptyUDim2, BackgroundTransparency = 1, BorderSizePixel = 0, TextColor3 = Theme["Text Color"].B })
+                            B.MouseButton1Click:Connect(cb)
+                            Library.Colors[O] = { { "BackgroundColor3", "Outline" } }
+                            Library.Colors[I] = { { "BackgroundColor3", "Contrast", "B" } }
+                            Library.Colors[B] = { { "TextColor3", "Text Color", "B" } }
+                        end
+                        dockExtra("Watermark", function()
+                            local wm = _G.__crash_WatermarkRef
+                            if wm then wm.Visible = not wm.Visible end
+                        end)
+                        dockExtra("Keybinds", function()
+                            local kb = _G.__crash_KeybindsRef
+                            if kb then kb.Visible = not kb.Visible end
+                        end)
+                    end
+
                     return Dock
                 end
 
