@@ -2508,7 +2508,7 @@ local Gradient = Menu.Draw("UIGradient", { Parent = Header, Color = NewColorSequ
 
                         KeybindsList["Outline"] = Outline
                         KeybindsList["Background"] = Background
-                        Window["_KeybindsRef"] = Outline
+                        Self["_KeybindsRef"] = Outline
                     end
 
 
