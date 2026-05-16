@@ -245,6 +245,7 @@ local Misc = {}
 -- Menu Library
 do
     LPH_NO_VIRTUALIZE(function()
+        local s = math.floor
         local BasePath = "bitchbot"
 
         Menu = {
@@ -1196,7 +1197,6 @@ do
 
 
                 -- Notifications
-                local s = math.floor
                 do
                     local NTF_POS = s(23 * _sizeScale)
                     local Outline = Menu.Draw("Frame", { Parent = Menu.Overlays[1], BackgroundTransparency = 1, Position = NewUDim2(0, NTF_POS, 0, s(82 * _sizeScale)), Size = NewUDim2(0, Menu.GetTextBounds("Notification(s)", Fonts["Tahoma"]).X + s(10 * _sizeScale), 0, s(20 * _sizeScale)) })
