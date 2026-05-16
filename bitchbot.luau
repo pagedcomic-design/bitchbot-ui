@@ -193,6 +193,21 @@ local Raycast = Workspace.Raycast
 local ScreenSize = CurrentCamera.ViewportSize
 local ScreenX = ScreenSize.X
 local ScreenY = ScreenSize.Y
+local _sizeScale = math.clamp(ScreenY / 1080, 0.6, 1.5)
+local _lastScreenX, _lastScreenY = ScreenX, ScreenY
+task.spawn(function()
+    while true do
+        local newVp = CurrentCamera.ViewportSize
+        if newVp.X ~= _lastScreenX or newVp.Y ~= _lastScreenY then
+            _lastScreenX, _lastScreenY = newVp.X, newVp.Y
+            ScreenSize = newVp
+            ScreenX = newVp.X
+            ScreenY = newVp.Y
+            _sizeScale = math.clamp(ScreenY / 1080, 0.6, 1.5)
+        end
+        task.wait(1)
+    end
+end)
 
 local LocalPlayer = Players.LocalPlayer
 local PlayerAdded = Players.PlayerAdded
@@ -523,7 +538,7 @@ do
                     local Font = Properties.FontFace or Fonts["Tahoma"]
 
                     Render["FontFace"] = Font[1]
-                    Render["TextSize"] = Font[2]
+                    Render["TextSize"] = math.floor(Font[2] * _sizeScale)
 
                     if Properties.Text ~= "" then
                         local Library = Menu.Library
@@ -1183,15 +1198,16 @@ do
 
                 -- Notifications
                 do
-                    local Outline = Menu.Draw("Frame", { Parent = Menu.Overlays[1], BackgroundTransparency = 1, Position = NewUDim2(0, 23, 0, 82), Size = NewUDim2(0, Menu.GetTextBounds("Notification(s)", Fonts["Tahoma"]).X + 10, 0, 20) })
+                    local NTF_POS = s(23 * _sizeScale)
+                    local Outline = Menu.Draw("Frame", { Parent = Menu.Overlays[1], BackgroundTransparency = 1, Position = NewUDim2(0, NTF_POS, 0, s(82 * _sizeScale)), Size = NewUDim2(0, Menu.GetTextBounds("Notification(s)", Fonts["Tahoma"]).X + s(10 * _sizeScale), 0, s(20 * _sizeScale)) })
 
                     local Inline = Menu.Draw("Frame", { Parent = Outline, Position = EmptyUDim2, Size = NewUDim2(1, 0, 1, 0), BackgroundColor3 = Theme.Contrast.A, BorderColor3 = Theme.Outline, BorderMode = "Inset" })
 
-                    local Accent = Menu.Draw("Frame", { Parent = Inline, Position = NewUDim2(0, 0, 0, -1), Size = NewUDim2(1, 0, 0, 4), BackgroundColor3 = Theme.Outline, BorderSizePixel = 0 })
+                    local Accent = Menu.Draw("Frame", { Parent = Inline, Position = NewUDim2(0, 0, 0, -s(1 * _sizeScale)), Size = NewUDim2(1, 0, 0, s(4 * _sizeScale)), BackgroundColor3 = Theme.Outline, BorderSizePixel = 0 })
 
-                    local Holder = Menu.Draw("Frame", { Parent = Inline, Position = NewUDim2(0, 1, 0, 3), Size = NewUDim2(1, -2, 1, -4), BackgroundColor3 = Theme.White, BorderSizePixel = 0 })
+                    local Holder = Menu.Draw("Frame", { Parent = Inline, Position = NewUDim2(0, s(1 * _sizeScale), 0, s(3 * _sizeScale)), Size = NewUDim2(1, -s(2 * _sizeScale), 1, -s(4 * _sizeScale)), BackgroundColor3 = Theme.White, BorderSizePixel = 0 })
 
-                    local Background = Menu.Draw("Frame", { Parent = Outline, Position = NewUDim2(0, 0, 0, 22), Size = NewUDim2(0, 500, 0, 600), BackgroundTransparency = 1, BorderSizePixel = 0, ClipsDescendants = true })
+                    local Background = Menu.Draw("Frame", { Parent = Outline, Position = NewUDim2(0, 0, 0, s(22 * _sizeScale)), Size = NewUDim2(0, s(500 * _sizeScale), 0, s(600 * _sizeScale)), BackgroundTransparency = 1, BorderSizePixel = 0, ClipsDescendants = true })
 
                     local Label = Menu.Draw("TextLabel", { Parent = Inline, AnchorPoint = NewVector2(0.5, 0.5), Position = NewUDim2(0.5, -1, 0.5, 0), Text = "Notification(s)", TextColor3 = Theme["Text Color"].A, BackgroundTransparency = 1, BorderSizePixel = 0 })
 
@@ -1474,7 +1490,7 @@ do
 
                 Params.Text = Text
                 Params.Font = FontFace[1]
-                Params.Size = TextSize or FontFace[2]
+                Params.Size = (TextSize or FontFace[2]) * _sizeScale
                 Params.Width = ScreenSize.X
                 Params.RichText = true
 
@@ -1591,13 +1607,14 @@ do
 
                     -- Renders
                     do
+                        local CARD_PAD = s(4 * _sizeScale)
                         local Frame = Menu.Draw("Frame", { Parent = Parent, Position = Position, Size = Size, BackgroundColor3 = Theme.Outline, BorderSizePixel = 0, BackgroundTransparency = Invisible and 1 or 0 })
 
-                        local Accent = Menu.Draw("Frame", { Parent = Frame, Position = NewUDim2(0, 4, 0, 1), Size = NewUDim2(0, 4, 1, -2), BackgroundColor3 = Theme.Accent.B, BorderSizePixel = 0, BackgroundTransparency = Invisible and 1 or 0 })
+                        local Accent = Menu.Draw("Frame", { Parent = Frame, Position = NewUDim2(0, CARD_PAD, 0, s(1 * _sizeScale)), Size = NewUDim2(0, CARD_PAD, 1, -s(2 * _sizeScale)), BackgroundColor3 = Theme.Accent.B, BorderSizePixel = 0, BackgroundTransparency = Invisible and 1 or 0 })
 
-                        local Background = Menu.Draw("Frame", { Parent = Frame, Position = NewUDim2(0, 4, 0, 1), Size = NewUDim2(1, -5, 1, -2), BackgroundColor3 = Theme.Contrast.A, BorderSizePixel = 0, BackgroundTransparency = Invisible and 1 or 0 })
+                        local Background = Menu.Draw("Frame", { Parent = Frame, Position = NewUDim2(0, CARD_PAD, 0, s(1 * _sizeScale)), Size = NewUDim2(1, -(CARD_PAD + s(1 * _sizeScale)), 1, -s(2 * _sizeScale)), BackgroundColor3 = Theme.Contrast.A, BorderSizePixel = 0, BackgroundTransparency = Invisible and 1 or 0 })
 
-                        local Holder = Menu.Draw("Frame", { Parent = Background, Position = NewUDim2(0, 1, 0, 0), Size = NewUDim2(1, -2, 1, -1), BackgroundColor3 = Theme.White, BorderSizePixel = 0, BackgroundTransparency = Invisible and 1 or 0 })
+                        local Holder = Menu.Draw("Frame", { Parent = Background, Position = NewUDim2(0, s(1 * _sizeScale), 0, 0), Size = NewUDim2(1, -s(2 * _sizeScale), 1, -s(1 * _sizeScale)), BackgroundColor3 = Theme.White, BorderSizePixel = 0, BackgroundTransparency = Invisible and 1 or 0 })
 
                         local Label, Stroke = Menu.Draw("TextLabel", { Parent = Holder, AnchorPoint = NewVector2(0, 0.5), Position = NewUDim2(0, 3, 0.5, -1), Text = Text, TextTransparency = Invisible and 1 or 0, TextColor3 = Theme["Text Color"].A, TextXAlignment = "Left", BackgroundTransparency = 1, BorderSizePixel = 0, RichText = true })
 
@@ -1667,11 +1684,11 @@ do
                     do
                         local SizeX = Menu.GetTextBounds(Text, Fonts["Tahoma"]).X + 11
 
-                        local Card = Library:Card({ Parent = Menu["Notifications Holder"], Text = Text, Size = NewUDim2(0, SizeX, 0, 17), Invisible = true })
+                        local Card = Library:Card({ Parent = Menu["Notifications Holder"], Text = Text, Size = NewUDim2(0, SizeX, 0, s(17 * _sizeScale)), Invisible = true })
 
                         local Frame = Card["Frame"]
 
-                        local Tab = Menu.Draw("Frame", { Parent = Frame, Position = NewUDim2(0, 0, 1, -2), Size = NewUDim2(Floor(SizeX / 10.36) / SizeX, 0, 0, 1), BackgroundColor3 = Theme.Accent.A, BackgroundTransparency = 1, BorderSizePixel = 0 })
+                        local Tab = Menu.Draw("Frame", { Parent = Frame, Position = NewUDim2(0, 0, 1, -s(2 * _sizeScale)), Size = NewUDim2(Floor(SizeX / 10.36) / SizeX, 0, 0, s(1 * _sizeScale)), BackgroundColor3 = Theme.Accent.A, BackgroundTransparency = 1, BorderSizePixel = 0 })
 
                         -- Colors
                         do
@@ -1960,7 +1977,7 @@ do
                     Parameters = Parameters or {}
 
                     local Name = Parameters.Name or "Configurations"
-                    local Size = (typeof(Parameters.Size) == "Vector2" and NewUDim2(0, Parameters.Size.X, 0, Parameters.Size.Y)) or (typeof(Parameters.Size) == "UDim2" and Parameters.Size) or NewUDim2(0, 450, 0, 600)
+                    local Size = (typeof(Parameters.Size) == "Vector2" and NewUDim2(0, Parameters.Size.X, 0, Parameters.Size.Y)) or (typeof(Parameters.Size) == "UDim2" and Parameters.Size) or NewUDim2(0, math.floor(ScreenX * 0.45), 0, math.floor(ScreenY * 0.65))
                     local Bind = Parameters.Bind or Enum.KeyCode.RightAlt
                     local Callback = Parameters.Callback or EmptyFunction
                     local HasTabs = Parameters.HasTabs or false
@@ -2015,28 +2032,31 @@ do
 
                         local Outline = Menu.Draw("Frame", { Parent = Overlay, AnchorPoint = NewVector2(0.5, 0.5), Position = NewUDim2(0.5, 0, 0.5, 0), Size = Size, BackgroundColor3 = Theme.Contrast.A, BorderColor3 = Theme.Outline, BorderMode = "Inset" }) -- Visible = Window.IsVisible
 
-                        local Accent = Menu.Draw("Frame", { Parent = Outline, Position = NewUDim2(0, 0, 0, -1), Size = NewUDim2(1, 0, 0, 4), BackgroundColor3 = Theme.Outline, BorderSizePixel = 0 })
+                        local s = math.floor
+                        local Accent = Menu.Draw("Frame", { Parent = Outline, Position = NewUDim2(0, 0, 0, -s(1 * _sizeScale)), Size = NewUDim2(1, 0, 0, s(4 * _sizeScale)), BackgroundColor3 = Theme.Outline, BorderSizePixel = 0 })
 
-                        local Inline = Menu.Draw("Frame", { Parent = Outline, Position = NewUDim2(0, 1, 0, 3), Size = NewUDim2(1, -2, 1, -4), BackgroundColor3 = Theme.Contrast.B, BorderSizePixel = 0 })
+                        local Inline = Menu.Draw("Frame", { Parent = Outline, Position = NewUDim2(0, s(1 * _sizeScale), 0, s(3 * _sizeScale)), Size = NewUDim2(1, -s(2 * _sizeScale), 1, -s(4 * _sizeScale)), BackgroundColor3 = Theme.Contrast.B, BorderSizePixel = 0 })
 
-                        local Header = Menu.Draw("Frame", { Parent = Inline, Position = EmptyUDim2, Size = NewUDim2(1, 0, 0, 32), BackgroundColor3 = Theme.White, BorderSizePixel = 0 })
+                        local Header = Menu.Draw("Frame", { Parent = Inline, Position = EmptyUDim2, Size = NewUDim2(1, 0, 0, s(32 * _sizeScale)), BackgroundColor3 = Theme.White, BorderSizePixel = 0 })
 
-                        local Background = Menu.Draw("Frame", { Parent = Outline, Position = NewUDim2(0, 8, 0, 20), Size = NewUDim2(1, -16, 1, -28), BackgroundColor3 = Theme.Contrast.B, BorderColor3 = Theme.Contrast.A, BorderMode = "Inset" })
+                        local Background = Menu.Draw("Frame", { Parent = Outline, Position = NewUDim2(0, s(8 * _sizeScale), 0, s(20 * _sizeScale)), Size = NewUDim2(1, -s(16 * _sizeScale), 1, -s(28 * _sizeScale)), BackgroundColor3 = Theme.Contrast.B, BorderColor3 = Theme.Contrast.A, BorderMode = "Inset" })
 
                         if HasTabs then
-                            local TabOutline = Menu.Draw("Frame", { Parent = Background, Position = NewUDim2(0, 2, 0, 2), Size = NewUDim2(1, -4, 1, -4), BackgroundColor3 = Theme.Outline, BorderSizePixel = 0 })
+                            local TAB_OFF = s(2 * _sizeScale)
+                            local TAB_H = s(22 * _sizeScale)
+                            local TabOutline = Menu.Draw("Frame", { Parent = Background, Position = NewUDim2(0, TAB_OFF, 0, TAB_OFF), Size = NewUDim2(1, -TAB_OFF * 2, 1, -TAB_OFF * 2), BackgroundColor3 = Theme.Outline, BorderSizePixel = 0 })
 
-                            local TabHeader = Menu.Draw("Frame", { Parent = TabOutline, Position = NewUDim2(0, 1, 0, 0), Size = NewUDim2(1, -2, 0, 22), BackgroundColor3 = Theme.Outline, BorderSizePixel = 0 })
+                            local TabHeader = Menu.Draw("Frame", { Parent = TabOutline, Position = NewUDim2(0, s(1 * _sizeScale), 0, 0), Size = NewUDim2(1, -s(2 * _sizeScale), 0, TAB_H), BackgroundColor3 = Theme.Outline, BorderSizePixel = 0 })
 
-                            local TabBackground = Menu.Draw("Frame", { Parent = TabHeader, Position = NewUDim2(0, 0, 0, 4), Size = NewUDim2(1, 0, 1, -5), BackgroundColor3 = Theme.Outline, BorderSizePixel = 0 })
+                            local TabBackground = Menu.Draw("Frame", { Parent = TabHeader, Position = NewUDim2(0, 0, 0, s(4 * _sizeScale)), Size = NewUDim2(1, 0, 1, -s(5 * _sizeScale)), BackgroundColor3 = Theme.Outline, BorderSizePixel = 0 })
 
                             local TabSpace = Menu.Draw("Frame", { Parent = TabBackground, Position = EmptyUDim2, Size = NewUDim2(1, 0, 1, 0), BackgroundTransparency = 1, BorderSizePixel = 0 })
 
-                            local TabInline = Menu.Draw("Frame", { Parent = TabOutline, Position = NewUDim2(0, 1, 0, 22), Size = NewUDim2(1, -2, 1, -23), BackgroundColor3 = Theme.Contrast.A, BorderSizePixel = 0 })
+                            local TabInline = Menu.Draw("Frame", { Parent = TabOutline, Position = NewUDim2(0, s(1 * _sizeScale), 0, TAB_H), Size = NewUDim2(1, -s(2 * _sizeScale), 1, -(TAB_H + s(1 * _sizeScale))), BackgroundColor3 = Theme.Contrast.A, BorderSizePixel = 0 })
 
-                            local TabHolder = Menu.Draw("Frame", { Parent = TabInline, Position = NewUDim2(0, 1, 0, 0), Size = NewUDim2(1, -2, 1, -1), BackgroundColor3 = Theme.Contrast.B, BorderSizePixel = 0 })
+                            local TabHolder = Menu.Draw("Frame", { Parent = TabInline, Position = NewUDim2(0, s(1 * _sizeScale), 0, 0), Size = NewUDim2(1, -s(2 * _sizeScale), 1, -s(1 * _sizeScale)), BackgroundColor3 = Theme.Contrast.B, BorderSizePixel = 0 })
 
-                            local TabAccent = Menu.Draw("Frame", { Parent = TabHolder, Position = EmptyUDim2, Size = NewUDim2(1, 0, 0, 30), BackgroundColor3 = Theme.White, BorderSizePixel = 0 })
+                            local TabAccent = Menu.Draw("Frame", { Parent = TabHolder, Position = EmptyUDim2, Size = NewUDim2(1, 0, 0, s(30 * _sizeScale)), BackgroundColor3 = Theme.White, BorderSizePixel = 0 })
 
                             local Gradient2 = Menu.Draw("UIGradient", { Parent = TabAccent, Color = NewColorSequence(Theme.Contrast.A, Theme.Contrast.B), Rotation = 90 })
 
@@ -2120,7 +2140,7 @@ local Gradient = Menu.Draw("UIGradient", { Parent = Header, Color = NewColorSequ
 
                         -- Resize handle
                         do
-                            local ResizeHandle = Menu.Draw("TextButton", { Parent = Outline, AnchorPoint = NewVector2(1, 1), Position = NewUDim2(1, 0, 1, 0), Size = NewUDim2(0, 14, 0, 14), BackgroundColor3 = Theme.Accent.B, BorderSizePixel = 0, Text = "", ZIndex = 9999 })
+                            local ResizeHandle = Menu.Draw("TextButton", { Parent = Outline, AnchorPoint = NewVector2(1, 1), Position = NewUDim2(1, 0, 1, 0), Size = NewUDim2(0, s(14 * _sizeScale), 0, s(14 * _sizeScale)), BackgroundColor3 = Theme.Accent.B, BorderSizePixel = 0, Text = "", ZIndex = 9999 })
                             Library.Colors[ResizeHandle] = { { "BackgroundColor3", "Accent", "B" } }
                             local resizing = false
                             local resizeStart = nil
@@ -2135,7 +2155,7 @@ local Gradient = Menu.Draw("UIGradient", { Parent = Header, Color = NewColorSequ
                                 if resizing and input.UserInputType == Enum.UserInputType.MouseMovement then
                                     local delta = Vector2.new(input.Position.X, input.Position.Y) - resizeStart
                                     local newSize = resizeSize + delta
-                                    newSize = Vector2.new(math.max(380, newSize.X), math.max(300, newSize.Y))
+                                    newSize = Vector2.new(math.max(math.floor(ScreenX * 0.35), newSize.X), math.max(math.floor(ScreenY * 0.35), newSize.Y))
                                     Outline.Size = NewUDim2(0, newSize.X, 0, newSize.Y)
                                 end
                             end)
@@ -2458,7 +2478,7 @@ local Gradient = Menu.Draw("UIGradient", { Parent = Header, Color = NewColorSequ
 
                     -- Renders
                     do
-                        local Outline = Menu.Draw("Frame", { Parent = Menu.Overlays[1], BackgroundTransparency = 1, AnchorPoint = NewVector2(0, 0.5), Position = NewUDim2(0, 23, 0.5, 0), Size = NewUDim2(0, Menu.GetTextBounds("Keybind(s)", Fonts["Tahoma"]).X + 10, 0, 20), Visible = KeybindsList.IsVisible })
+                        local Outline = Menu.Draw("Frame", { Parent = Menu.Overlays[1], BackgroundTransparency = 1, AnchorPoint = NewVector2(0, 0.5), Position = NewUDim2(0, s(23 * _sizeScale), 0.5, 0), Size = NewUDim2(0, Menu.GetTextBounds("Keybind(s)", Fonts["Tahoma"]).X + s(10 * _sizeScale), 0, s(20 * _sizeScale)), Visible = KeybindsList.IsVisible })
 
                         local Inline = Menu.Draw("Frame", { Parent = Outline, Position = EmptyUDim2, Size = NewUDim2(1, 0, 1, 0), BackgroundColor3 = Theme.Contrast.A, BorderColor3 = Theme.Outline, BorderMode = "Inset" })
 
@@ -2510,7 +2530,7 @@ local Gradient = Menu.Draw("UIGradient", { Parent = Header, Color = NewColorSequ
 
                             local Text = Format("[%s] %s", #Value > 0 and Keybind.Shorten(Value[2]) or "None", Keybind.Name)
 
-                            local Card = Library:Card({ Parent = Background, Text = Text, Size = NewUDim2(0, Menu.GetTextBounds(Text, Fonts["Tahoma"]).X + 11, 0, 17) })
+                            local Card = Library:Card({ Parent = Background, Text = Text, Size = NewUDim2(0, Menu.GetTextBounds(Text, Fonts["Tahoma"]).X + s(11 * _sizeScale), 0, s(17 * _sizeScale)) })
 
 
                             local Frame = Card["Frame"]
